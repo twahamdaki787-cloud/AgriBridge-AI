@@ -39,7 +39,8 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${userApiKey}`, {
+        // Hili ndilo jina la model na URL sahihi 100%
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${userApiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +57,7 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
         const data = await response.json();
 
         if (data.error) {
-            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu: ${data.error.message}`;
+            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API: ${data.error.message}`;
             return;
         }
 
