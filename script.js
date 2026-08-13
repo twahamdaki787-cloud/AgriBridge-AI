@@ -1,5 +1,5 @@
 // Weka Gemini API Key yako hapa ndani ya alama za nukuu
-const GEMINI_API_KEY = "WEKA_API_KEY_YAKO_HAPA";
+const GEMINI_API_KEY = "AQ.Ab8RN6K958c1Qaa5kdQ4FmVeoR9Z60fJXHl9Ys8wvmOYKmwA6w";
 
 document.getElementById('agriForm').addEventListener('submit', async function(e) {
     e.preventDefault();
