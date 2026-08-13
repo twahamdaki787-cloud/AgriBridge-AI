@@ -1,39 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="sw">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriBridge-AI | Mshauri wa Kilimo</title>
+    <title>AgriBridge-AI</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <div style="padding: 10px; text-align: center;">
-  <input type="password" id="apiKeyInput" placeholder="Paste Gemini API Key yako hapa" style="width: 85%; padding: 10px; border-radius: 8px; border: 1px solid #2e7d32; text-align: center;">
-    </div>
-        
-        <div class="logo">
-            <h1>🌱 AgriBridge-AI</h1>
-        </div>
+        <div class="logo">🌱 AgriBridge-AI</div>
         <p>Mshauri wako wa Kilimo na Akili Bandia (Gemini AI)</p>
     </header>
 
-    <main class="chat-container">
-        <div class="chat-box" id="chatBox">
+    <div class="container">
+        <!-- Kisanduku cha Wazi cha Kuingiza API Key -->
+        <div style="padding: 10px; text-align: center; background-color: #f0fdf4; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bbf7d0;">
+            <label for="apiKeyInput" style="font-size: 13px; color: #166534; display: block; margin-bottom: 5px; font-weight: bold;">
+                🔑 Weka Gemini API Key Yako Hapa Chini:
+            </label>
+            <input type="password" id="apiKeyInput" placeholder="Paste API Key hapa (AIzaSy...)" style="width: 90%; padding: 10px; border-radius: 6px; border: 1px solid #16a34a; text-align: center; font-size: 14px;">
+        </div>
+
+        <div id="chatBox" class="chat-box">
             <div class="message ai-message">
-                <strong>AgriBridge AI:</strong> Habari! Mimi ni mshauri wako wa kilimo. Una swali gani kuhusu mazao, udongo, au masoko leo?
+                <strong>AgriBridge AI:</strong> Habari! Mimi ni mshauri wako wa kilimo. Weka API Key yako hapo juu kwanza, kisha niulize swali lolote kuhusu mazao, udongo, au masoko!
             </div>
         </div>
 
         <form id="agriForm" class="input-area">
             <input type="text" id="userInput" placeholder="Andika swali lako hapa kuhusu kilimo..." required>
-            <button type="submit" id="sendBtn">Tuma</button>
+            <button type="submit">Tuma</button>
         </form>
-    </main>
+    </div>
 
     <footer>
         <p>&copy; 2026 AgriBridge-AI. Haki zote zimehifadhiwa.</p>
