@@ -39,8 +39,8 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
-        // Hili ndilo jina la model na URL sahihi 100%
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${userApiKey}`, {
+        // Tumia toleo la 'v1' la Google badala ya 'v1beta'
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${userApiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
             aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Sikuweza kupata jibu. Jaribu tena.";
         }
     } catch (error) {
-        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Hitilafu ya mtandao.";
+        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Hitilafu ya mtandao. Angalia bando au muunganisho wako.";
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;
