@@ -1,5 +1,5 @@
-// Weka Gemini API Key yako hapa ndani ya alama za nukuu
-const GEMINI_API_KEY = "AQ.Ab8RN6K958c1Qaa5kdQ4FmVeoR9Z60fJXHl9Ys8wvmOYKmwA6w";
+// 1. Weka API Key yako mpya hapa ndani ya quotes
+const GEMINI_API_KEY = "AQ.Ab8RN6K5EpmY4hNxdI5VZTKgJTcUHzeW-t-CJRcJZQzM6TPNkA";
 
 document.getElementById('agriForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -10,7 +10,7 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
 
     if (messageText === '') return;
 
-    // 1. Onyesha ujumbe wa mtumiaji
+    // Onyesha ujumbe wa mtumiaji
     const userDiv = document.createElement('div');
     userDiv.classList.add('message', 'user-message');
     userDiv.textContent = messageText;
@@ -19,16 +19,16 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
     userInput.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // 2. Onyesha ujumbe wa subira
+    // Onyesha ujumbe wa subira
     const aiDiv = document.createElement('div');
     aiDiv.classList.add('message', 'ai-message');
     aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> <em>Inafikiria na kutafuta majibu...</em>";
     chatBox.appendChild(aiDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // 3. Tuma ombi kwenda Gemini API
+    // Tuma ombi kwenda Gemini API (Model iliyothibitishwa)
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,14 +44,13 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
 
         const data = await response.json();
 
-        // Kama kuna kosa lililorereshwa na Google API
         if (data.error) {
             console.error("Gemini API Error:", data.error);
-            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API (${data.error.message || 'Key haijatambuliwa'}). Hakikisha API Key iko sahihi.`;
+            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API (${data.error.message || 'Key haijatambuliwa'}).`;
             return;
         }
 
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
+        if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text) {
             let aiReply = data.candidates[0].content.parts[0].text;
             aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
             aiDiv.innerHTML = `<strong>AgriBridge AI:</strong><br>${aiReply}`;
@@ -60,10 +59,9 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
         }
     } catch (error) {
         console.error("Fetch Error:", error);
-        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Imeshindwa kuunganisha na mtandao. Angalia bando au API Key yako.";
+        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Imeshindwa kuunganisha na mtandao. Angalia mtandao wako.";
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-docu
