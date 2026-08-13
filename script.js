@@ -1,8 +1,20 @@
-// 1. Weka API Key yako mpya hapa ndani ya quotes
-const GEMINI_API_KEY = "AQ.Ab8RN6K5EpmY4hNxdI5VZTKgJTcUHzeW-t-CJRcJZQzM6TPNkA";
-
 document.getElementById('agriForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    // 1. Chukua API Key kutoka kwenye Input Box
+    let userApiKey = document.getElementById('apiKeyInput')?.value.trim();
+
+    // Kama aliweka mwanzo, i-save kwenye browser (localStorage)
+    if (userApiKey) {
+        localStorage.setItem('my_gemini_key', userApiKey);
+    } else {
+        userApiKey = localStorage.getItem('my_gemini_key');
+    }
+
+    if (!userApiKey) {
+        alert("Tafadhali weka Gemini API Key yako kwenye kisanduku cha juu kwanza!");
+        return;
+    }
 
     const userInput = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
@@ -26,9 +38,8 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
     chatBox.appendChild(aiDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Tumia URL rasmi ya Google Gemini v1beta yenye gemini-1.5-flash-latest
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${userApiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +47,7 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Wewe ni mshauri mtaalamu wa kilimo na mifugo Afrika Mashariki anayeitwa AgriBridge-AI. Jibu swali hili kwa Kiswahili fasaha, kutoa ushauri bora wa mbolea, mbegu, au masoko: ${messageText}`
+                        text: `Wewe ni mshauri mtaalamu wa kilimo na mifugo Afrika Mashariki anayeitwa AgriBridge-AI. Jibu swali hili kwa Kiswahili fasaha: ${messageText}`
                     }]
                 }]
             })
@@ -45,24 +56,20 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
         const data = await response.json();
 
         if (data.error) {
-            console.error("Gemini API Error:", data.error);
-            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API (${data.error.message}). Hakikisha API Key yako iko sahihi.`;
+            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu: ${data.error.message}`;
             return;
         }
 
-        if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
             let aiReply = data.candidates[0].content.parts[0].text;
-            // Rekebisha muonekano wa text
             aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
             aiDiv.innerHTML = `<strong>AgriBridge AI:</strong><br>${aiReply}`;
         } else {
-            aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Samahani, sikuweza kupata jibu sahihi kwa sasa. Jaribu tena.";
+            aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Sikuweza kupata jibu. Jaribu tena.";
         }
     } catch (error) {
-        console.error("Fetch Error:", error);
-        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Imeshindwa kuunganisha na mtandao. Angalia bando lako.";
+        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Hitilafu ya mtandao.";
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;
 });
-
