@@ -26,9 +26,9 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
     chatBox.appendChild(aiDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Tuma ombi kwenda Gemini API (Model iliyothibitishwa)
+    // Tumia URL rasmi ya Google Gemini v1beta yenye gemini-1.5-flash-latest
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Wewe ni mshauri mtaalamu wa kilimo na mifugo Afrika Mashariki anayeitwa AgriBridge-AI. Jibu swali hili kwa Kiswahili fasaha na kinachoeleweka vizuri: ${messageText}`
+                        text: `Wewe ni mshauri mtaalamu wa kilimo na mifugo Afrika Mashariki anayeitwa AgriBridge-AI. Jibu swali hili kwa Kiswahili fasaha, kutoa ushauri bora wa mbolea, mbegu, au masoko: ${messageText}`
                     }]
                 }]
             })
@@ -46,20 +46,21 @@ document.getElementById('agriForm').addEventListener('submit', async function(e)
 
         if (data.error) {
             console.error("Gemini API Error:", data.error);
-            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API (${data.error.message || 'Key haijatambuliwa'}).`;
+            aiDiv.innerHTML = `<strong>AgriBridge AI:</strong> Hitilafu ya API (${data.error.message}). Hakikisha API Key yako iko sahihi.`;
             return;
         }
 
-        if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text) {
+        if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
             let aiReply = data.candidates[0].content.parts[0].text;
+            // Rekebisha muonekano wa text
             aiReply = aiReply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
             aiDiv.innerHTML = `<strong>AgriBridge AI:</strong><br>${aiReply}`;
         } else {
-            aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Samahani, sikuweza kupata jibu sahihi. Jaribu tena.";
+            aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Samahani, sikuweza kupata jibu sahihi kwa sasa. Jaribu tena.";
         }
     } catch (error) {
         console.error("Fetch Error:", error);
-        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Imeshindwa kuunganisha na mtandao. Angalia mtandao wako.";
+        aiDiv.innerHTML = "<strong>AgriBridge AI:</strong> Imeshindwa kuunganisha na mtandao. Angalia bando lako.";
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;
